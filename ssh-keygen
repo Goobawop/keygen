@@ -1,0 +1,36 @@
+#!/bin/bash
+
+
+# Colors
+
+MAGENTA='\033[35m'
+RED='\033[31m'
+NC='\033[0m'
+BLINK='\033[5m'
+BOLD='\033[1m'
+
+
+# Prompt user for key identifier and notify of where keys will be generated.
+
+echo
+echo -e $MAGENTA"Enter the identifier for the keys to be generated (ex. srv):"
+echo -e $NC
+read keyId
+
+privkey=$keyId.rsa.key
+pubkey=$keyId.pub
+
+echo -e $BOLD
+
+
+# Run keygen and pipe in user responses to ensure final file is created as necessary.
+
+ssh-keygen -t rsa -f $HOME/.ssh/private/$keyId
+mv $HOME/.ssh/private/$keyId $HOME/.ssh/private/$privkey
+mv $HOME/.ssh/private/$pubkey $HOME/.ssh/public/
+
+echo -e $MAGENTA
+echo "The private key has been saved as:" 
+echo -e $NC"$HOME/.ssh/private/$privkey"
+echo -e $MAGENTA"The public key has been saved as:"
+echo -e $NC"$HOME/.ssh/public/$pubkey"
