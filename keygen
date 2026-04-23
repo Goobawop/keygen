@@ -32,5 +32,11 @@ mv $HOME/.ssh/private/$pubkey $HOME/.ssh/public/
 echo -e $MAGENTA
 echo "The private key has been saved as:" 
 echo -e $NC"$HOME/.ssh/private/$privkey"
-echo -e $MAGENTA"The public key has been saved as:"
+echo -e $BOLD$MAGENTA"The public key has been saved as:"
 echo -e $NC"$HOME/.ssh/public/$pubkey"
+
+echo -e $MAGENTA"
+                         _G-wop_
+                         [ - - ]
+                          \ - /
+        "
