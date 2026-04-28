@@ -10,6 +10,16 @@ BLINK='\033[5m'
 BOLD='\033[1m'
 
 
+# Confirm that paths for key generation exist.
+
+dir=$HOME/.ssh
+pubDir=$HOME/.ssh/public
+
+if
+	[ ! -d "$pubDir" ]; then
+	mkdir -p $dir/public
+	mkdir $dir/private
+fi
 # Prompt user for key identifier and notify of where keys will be generated.
 
 echo
@@ -20,20 +30,31 @@ read keyId
 privkey=$keyId.rsa.key
 pubkey=$keyId.pub
 
-echo -e $BOLD
 
+# Check for duplicates and inform the user of any found before continuing with key generation.
+
+dupeCheck=$dir/private/$privkey
+
+if
+	[ -f "$dupeCheck" ]; then
+	echo
+	echo -e $RED"There is already a key generated with that identifer. Please choose another or rename the original file."$NC
+	exit 1
+fi
 
 # Run keygen and pipe in user responses to ensure final file is created as necessary.
 
-ssh-keygen -t rsa -f $HOME/.ssh/private/$keyId
-mv $HOME/.ssh/private/$keyId $HOME/.ssh/private/$privkey
-mv $HOME/.ssh/private/$pubkey $HOME/.ssh/public/
+echo -e $BOLD
+
+ssh-keygen -t rsa -f $dir/private/$keyId
+mv $dir/private/$keyId $dir/private/$privkey
+mv $dir/private/$pubkey $pubDir/
 
 echo -e $MAGENTA
 echo "The private key has been saved as:" 
-echo -e $NC"$HOME/.ssh/private/$privkey"
+echo -e $NC"$dir/private/$privkey"
 echo -e $BOLD$MAGENTA"The public key has been saved as:"
-echo -e $NC"$HOME/.ssh/public/$pubkey"
+echo -e $NC"$pubDir/$pubkey"
 
 echo -e $MAGENTA"
                          _G-wop_
